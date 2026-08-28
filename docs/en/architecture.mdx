@@ -1,12 +1,10 @@
 ---
-weight: 70
+weight: 40
 queries:
   - "How does Web Terminal work?"
   - "web-cli terminal Pod lifecycle"
   - "Web Terminal WebSocket and session architecture"
 ---
-
-import terminalIcon from './assets/terminal_square.svg'
 
 # Architecture
 
@@ -24,12 +22,13 @@ sequenceDiagram
     participant Pod as Terminal Pod
     participant API as Kubernetes API
 
-    Browser->>Platform: Click the Web CLI terminal icon in the top-right corner
+    Browser->>Platform: Click Web CLI in the top-right corner
     Platform-->>Browser: Open the Web Terminal session page at /console-webcli
     Browser->>Browser: Select a cluster or node in the left pane
     Browser->>Platform: Open WebSocket /auth/v1/pod/shell in a new sub-tab
-    Platform->>WebCLI: Forward authenticated WebSocket request
-    WebCLI->>Platform: Apply platform audit processing
+    Platform->>Platform: Apply platform audit processing
+    Platform->>WebCLI: Forward the WebSocket request
+    WebCLI->>WebCLI: Authenticate the request
     WebCLI->>API: Resolve the selection to a cluster or node terminal
     alt Terminal Pod does not exist
         WebCLI->>API: Create terminal Pod
@@ -41,17 +40,17 @@ sequenceDiagram
     Pod-->>WebCLI: Interactive output
     WebCLI-->>Platform: Forward terminal stream
     Platform-->>Browser: Display terminal output
-    Note over WebCLI,API: Idle sessions are removed after the configured timeout.
+    Note over WebCLI,API: Idle sessions are removed after the fixed 15-minute idle timeout.
 ```
 
 ## Request Flow
 
 The request flow is as follows:
 
-1. Click the <span style={{ whiteSpace: 'nowrap' }}><img src={terminalIcon} alt="Web CLI terminal icon" width="20" height="20" style={{ display: 'inline-block', verticalAlign: 'middle' }} /> <strong>Web CLI</strong> terminal icon</span> in the top-right corner of the platform page.
+1. Click **Web CLI** in the top-right corner of the platform page.
 2. The platform opens the Web Terminal session page at `/console-webcli`, which lists the available clusters and their nodes in its left pane.
 3. Selecting a cluster or a node opens a sub-tab, and the frontend opens the `/auth/v1/pod/shell` WebSocket for that target through the platform service.
-4. The platform audit middleware processes the WebSocket request.
+4. The platform audit middleware processes the WebSocket request and forwards it to web-cli.
 5. The terminal handler authenticates the request and resolves the selection to a cluster or node terminal.
 6. The terminal manager creates or reuses a terminal Pod in the system namespace.
 7. The handler connects the WebSocket stream to the Pod exec session.

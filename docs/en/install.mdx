@@ -1,5 +1,5 @@
 ---
-weight: 30
+weight: 50
 queries:
   - "How do I install the web-cli plugin?"
   - "web-cli global cluster installation"
@@ -51,13 +51,13 @@ metadata:
     cpaas.io/cluster-name: global
     cpaas.io/module-name: web-cli
     cpaas.io/module-type: plugin
-  name: global-temporary-name
+  name: global-web-cli
 spec:
   config: {}
   version: v4.2.12
 ```
 
-The temporary `metadata.name` is replaced by the platform after creation. Set `spec.version` to the exact version in the selected `ModuleConfig`.
+Choose a `metadata.name` that is stable and unique in the global cluster; the name cannot be changed after creation, and nothing rejects a second `ModuleInfo` for the same plugin under a different name. Installing from the web console generates its own name, so use one method consistently for a given cluster. Set `spec.version` to the exact version in the selected `ModuleConfig`.
 </Steps>
 
 ## Verify the Installation
@@ -75,4 +75,4 @@ Continue only when the status is `Running` and the target and current versions m
 - The Web CLI entry becomes available to platform users. Terminal access remains subject to each account's permissions on the selected cluster or node. See [Quick Start](./quick_start.mdx).
 - Terminal Pods are created on demand in the platform system namespace, `cpaas-system` by default, and removed when a session ends or times out. See [Terminal Pods](./concepts/terminal_pods.mdx).
 - Session and capacity limits are fixed in the plugin package and cannot be changed after installation. Moving to different values requires a different plugin version through the [Upgrade](./upgrade.mdx) workflow.
-- `web-cli` cannot be uninstalled after installation. Move to a different plugin version through the [Upgrade](./upgrade.mdx) workflow.
+- Whether `web-cli` can be uninstalled is controlled by the selected `ModuleConfig`. Check its `spec.deleteable` field before planning a removal: when it is `false`, deleting the `ModuleInfo` is rejected unless the object carries the `cpaas.io/force-delete: "true"` annotation.
