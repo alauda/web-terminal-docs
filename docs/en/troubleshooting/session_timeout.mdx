@@ -1,0 +1,19 @@
+---
+weight: 40
+queries:
+  - "Why was my Web Terminal session closed?"
+  - "web-cli idle timeout troubleshooting"
+  - "Web Terminal Reconnect after disconnection"
+---
+
+# Troubleshoot Session Timeout
+
+Web Terminal closes a session that stays inactive for 15 minutes. The terminal displays a disconnection notice when this happens.
+
+## Restore the Session
+
+Select **Reconnect** in the disconnected terminal to start a new session in the same sub-tab. You can also open a new session by selecting the cluster or the node again in the left pane.
+
+## Confirm the Cause
+
+A timeout is a normal cleanup result, not an error. The service removes the associated terminal Pod during its cleanup cycle. When **Reconnect** does not restore the session, confirm that the plugin and the terminal Pod are healthy; see [Troubleshoot Terminal Pods](./terminal_pod.mdx).

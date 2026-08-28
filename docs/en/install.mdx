@@ -1,36 +1,78 @@
 ---
-weight: 15
+weight: 50
+queries:
+  - "How do I install the web-cli plugin?"
+  - "web-cli global cluster installation"
+  - "install web-cli through ModulePlugin and ModuleConfig"
+  - "web-cli ModuleInfo Running status"
 ---
-
-:::tip
-
-If this module requires a separate installation process, you should provide installation documentation. Otherwise, this section can be omitted.
-
-Installation documentation should cover the installation process, configuration options, and uninstallation procedures. If the content is extensive, consider organizing it as a directory with multiple documents covering different aspects.
-
-For reference, you can view an [installation example](https://product-doc-guide.alauda.cn/template/installation/example.html).
-
-:::
 
 # Install
 
-## Installing XXX
+The `web-cli` Cluster Plugin is installed once on the global cluster; it is not installed separately on each workload cluster. Installing it enables the Web CLI entry in the top-right corner of the platform page, which provides both the cluster terminal and the node terminal.
 
-Describe the prerequisites needed for installing this component.
+The plugin is delivered as a platform package. Installation follows the standard Cluster Plugin workflow: publish the package to the marketplace, select a version, and start the installation. For the platform-wide workflow and lifecycle definitions, see <ExternalSiteLink name="acp" href="/extend/cluster_plugin.html#cluster-plugin" children="Cluster Plugin" />.
 
-### Installing XXX in web console
+Use either method below. The web console is the shorter path; the YAML method applies the same workflow at the resource level.
 
-Outline the process for installing the component through the web console interface.
+## Prerequisites
 
-### Installing XXX using CLI
+- The target `web-cli` package version is published to the platform marketplace.
+- You can query resources and create a `ModuleInfo` in the global cluster.
+- The selected `ModuleConfig` is available in the global cluster.
 
-Explain the steps for installing the component using the command line interface.
+## Install from the Web Console
 
-## Uninstalling XXX
+Follow the platform's standard <ExternalSiteLink name="acp" href="/extend/cluster_plugin.html#installing-via-web-console" children="Cluster Plugin installation workflow" /> to upload and install `web-cli`. Select the published plugin version, then start the installation. The Cluster Plugins list reports the plugin as running when the installation completes.
 
-Detail the uninstallation process. Typically, this involves first removing component instances, then deleting the Operator, and finally removing the associated CRDs.
+## Install with YAML
 
-## Custom Configuration
+<Steps>
+### Step 1: Check Available Versions
 
-Describe the configuration options that can be customized during the installation process.
+In the global cluster, confirm that the plugin and target version are available:
 
+```shell
+kubectl get moduleplugins web-cli
+kubectl get moduleconfigs -l cpaas.io/module-name=web-cli
+```
+
+Inspect the target `ModuleConfig` and confirm that its cluster affinity is global and its `spec.config` is empty. An empty configuration means that `web-cli` can be installed without dynamic form parameters.
+
+### Step 2: Create a ModuleInfo
+
+Create the `ModuleInfo` resource in the global cluster. The `cpaas.io/cluster-name` label targets the global cluster, but it does not change where the YAML is applied.
+
+```yaml
+apiVersion: cluster.alauda.io/v1alpha1
+kind: ModuleInfo
+metadata:
+  labels:
+    cpaas.io/cluster-name: global
+    cpaas.io/module-name: web-cli
+    cpaas.io/module-type: plugin
+  name: global-web-cli
+spec:
+  config: {}
+  version: v4.2.12
+```
+
+Choose a `metadata.name` that is stable and unique in the global cluster; the name cannot be changed after creation, and nothing rejects a second `ModuleInfo` for the same plugin under a different name. Installing from the web console generates its own name, so use one method consistently for a given cluster. Set `spec.version` to the exact version in the selected `ModuleConfig`.
+</Steps>
+
+## Verify the Installation
+
+Query the ModuleInfo resource by label:
+
+```shell
+kubectl get moduleinfo -l cpaas.io/module-name=web-cli
+```
+
+Continue only when the status is `Running` and the target and current versions match the selected version.
+
+## After Installation
+
+- The Web CLI entry becomes available to platform users. Terminal access remains subject to each account's permissions on the selected cluster or node. See [Quick Start](./quick_start.mdx).
+- Terminal Pods are created on demand in the platform system namespace, `cpaas-system` by default, and removed when a session ends or times out. See [Terminal Pods](./concepts/terminal_pods.mdx).
+- Session and capacity limits are fixed in the plugin package and cannot be changed after installation. Moving to different values requires a different plugin version through the [Upgrade](./upgrade.mdx) workflow.
+- Whether `web-cli` can be uninstalled is controlled by the selected `ModuleConfig`. Check its `spec.deleteable` field before planning a removal: when it is `false`, deleting the `ModuleInfo` is rejected unless the object carries the `cpaas.io/force-delete: "true"` annotation.

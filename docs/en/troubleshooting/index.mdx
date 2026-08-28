@@ -1,0 +1,18 @@
+---
+weight: 80
+queries:
+  - "Web Terminal troubleshooting"
+  - "web-cli terminal Pod and WebSocket errors"
+  - "How do I troubleshoot a Web Terminal session?"
+---
+
+# Troubleshooting
+
+Use the following order to isolate a failed terminal session:
+
+1. Confirm that the `web-cli` ModuleInfo reports `Running` in the global cluster.
+2. Check that the terminal Pod exists in the system namespace and reaches `Running`.
+3. Confirm that the account can access the selected cluster or node.
+4. Check whether the session timed out or the cluster reached its cluster terminal capacity.
+
+<Overview />

@@ -1,0 +1,29 @@
+---
+weight: 10
+queries:
+  - "Why is web-cli installation not running?"
+  - "web-cli ModuleInfo troubleshooting"
+  - "Cluster Plugin global cluster installation error"
+---
+
+# Troubleshoot Plugin Installation
+
+## ModuleInfo Is Not Running
+
+Check the ModulePlugin and ModuleConfig in the global cluster:
+
+```shell
+kubectl get moduleplugins web-cli
+kubectl get moduleconfigs -l cpaas.io/module-name=web-cli
+kubectl get moduleinfo -l cpaas.io/module-name=web-cli
+```
+
+Confirm that the selected ModuleConfig version is published, the ModuleInfo has `cpaas.io/module-type: plugin`, and its `cpaas.io/cluster-name` value is `global`.
+
+## Installation Does Not Start
+
+Verify that the ModuleInfo was applied to the global cluster. The `cpaas.io/cluster-name` label identifies the installation target, but it does not change the cluster where the resource must be created.
+
+## Version Mismatch
+
+Compare the ModuleInfo `spec.version` with the published ModuleConfig `spec.version`. Use the platform upgrade workflow to select a published version.

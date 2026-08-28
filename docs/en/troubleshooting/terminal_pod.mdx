@@ -1,0 +1,21 @@
+---
+weight: 20
+queries:
+  - "Why did the Web Terminal Pod fail?"
+  - "web-cli max terminal Pods reached"
+  - "terminal Pod not running troubleshooting"
+---
+
+# Troubleshoot Terminal Pods
+
+## Pod Is Not Created
+
+Check the system namespace and the terminal Pod label selector. The default system namespace is `cpaas-system`, and the default selector is `web-terminal=true`.
+
+## Pod Does Not Reach Running
+
+Inspect the Pod status and events in the target cluster. The Web Terminal session cannot start until the Pod reaches the `Running` phase. Check image availability, scheduling constraints, and service account permissions according to your platform deployment.
+
+## Maximum Pod Limit Reached
+
+A cluster can hold up to 50 active cluster terminal Pods. Close unused sessions, or wait for idle sessions to be removed, when the limit is reached. The limit is fixed in each plugin version; raising it requires a different `web-cli` version through the [Upgrade](../upgrade.mdx) workflow.
