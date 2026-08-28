@@ -1,44 +1,178 @@
 ---
-weight: 10
+title: Release Notes
+weight: 20
+queries:
+  - "Alauda Container Platform Web Terminal release notes"
+  - "web-cli plugin version changes"
+  - "Web Terminal features and bug fixes"
 ---
-
-:::tip
-
-You can view a [Release Notes example](https://product-doc-guide.alauda.cn/template/release_notes/example.html) for reference.
-
-:::
 
 # Release Notes
 
-## Minor Version: e.g., 2.0.0
+This page summarizes the published `web-cli` plugin versions and their user-visible changes.
 
-### Features and Enhancements
+## v4.2.12
 
-#### Feature Name
-Provide a brief introduction to the new or enhanced features.
+This release updates the runtime dependencies and terminal base image to address security vulnerabilities while preserving the existing Web Terminal workflows.
 
+### Improvements
 
-### Deprecated
+- Updated the bundled Go dependencies and terminal image components.
 
-#### Feature Name
-Provide a brief introduction to the deprecated features, including reasons for deprecation and suggested alternatives.
+### Bug Fixes
 
+- Addressed reported security vulnerabilities in the terminal runtime dependencies.
 
-### Features to be phased out
+## v4.2.11
 
-#### Feature Name
-Provide a brief introduction to the features that will be deprecated, including reasons for deprecation and suggested alternatives.
+This release improves cluster metadata freshness and makes terminal deployment paths configurable.
 
+### Features
 
-### Fixed Issues
+- Added a configurable cluster metadata cache lifetime and refresh behavior for stale registry data.
 
-The list of bug fixes can be automatically generated from JIRA issues using the `release-notes-for-bugs` component provided by the documentation framework.
+### Improvements
 
-For usage instructions, refer to the [Guide to Automatically Generating Release Notes](https://product-doc-guide.alauda.cn/guide/auto_gen_releasenotes.html).
+- Made the terminal working-directory base path configurable.
 
+### Bug Fixes
 
-### Known Issues
+- Updated the bundled Kubernetes client image and addressed security vulnerabilities.
 
-Similar to bug fixes, known issues can be automatically generated from JIRA issues using the `release-notes-for-bugs` component provided by the documentation framework.
+## v4.2.8
 
-For usage instructions, refer to the [Guide to Automatically Generating Release Notes](https://product-doc-guide.alauda.cn/guide/auto_gen_releasenotes.html).
+This release updates the Web Terminal frontend plugin and refreshes the runtime dependencies used by terminal images.
+
+### Improvements
+
+- Updated the Web Terminal frontend plugin to `v1.0.4`.
+- Aligned the terminal image base components and Go dependencies with supported versions.
+
+## v4.2.5
+
+This release moves Web Terminal to the Cluster Plugin delivery model and strengthens the terminal image and upgrade behavior.
+
+### Features
+
+- Added Cluster Plugin packaging and upgrade support for Web Terminal.
+
+### Improvements
+
+- Added pre-upgrade resource preservation for resources that must survive an upgrade.
+- Added a seccomp profile for terminal workloads.
+- Removed obsolete service-mesh wrapper tooling from the terminal image.
+
+### Bug Fixes
+
+- Removed risky or unsupported utilities from the terminal image and updated vulnerable dependencies.
+
+## v4.1.10
+
+This maintenance release updates the terminal image to address security vulnerabilities.
+
+### Bug Fixes
+
+- Updated terminal image components to address reported security vulnerabilities.
+
+## v4.1.9
+
+This release strengthens the runtime security posture of terminal workloads.
+
+### Improvements
+
+- Added a seccomp profile for Web Terminal Pods.
+- Updated security-related dependencies and runtime settings.
+
+### Bug Fixes
+
+- Addressed security and CIS baseline findings in the terminal deployment.
+
+## v4.1.6
+
+This release removes unsupported third-party code and updates the terminal runtime dependencies.
+
+### Improvements
+
+- Removed LGPL-licensed code from the terminal runtime.
+- Updated the cyborg client and related dependencies.
+
+### Bug Fixes
+
+- Addressed reported security vulnerabilities in the terminal image and dependencies.
+
+## v4.1.2
+
+This maintenance release updates the OAuth dependencies used by terminal authentication.
+
+### Bug Fixes
+
+- Updated OAuth dependencies to address security vulnerabilities.
+
+## v4.1.1
+
+This release establishes the current Web Terminal implementation and improves compatibility across platform versions.
+
+### Features
+
+- Reimplemented Web Terminal session handling for cluster and node terminal use.
+- Added the `kubectl` terminal workflow and node shell support.
+
+### Improvements
+
+- Added token extraction compatibility for different platform versions.
+- Added checks for the API refiner service before establishing terminal sessions.
+- Updated the plugin identity and display name to Alauda Container Platform Web Terminal.
+
+### Bug Fixes
+
+- Recycled remaining node-terminal Pods after a session ends.
+- Removed risky terminal image tools and updated vulnerable dependencies.
+
+## v4.0.13
+
+This maintenance release updates the terminal image to address security vulnerabilities.
+
+### Bug Fixes
+
+- Updated terminal image components to address reported security vulnerabilities.
+
+## v4.0.12
+
+This release strengthens terminal workload security and refreshes runtime dependencies.
+
+### Improvements
+
+- Added a seccomp profile for terminal workloads.
+- Updated the cyborg client and related runtime dependencies.
+
+### Bug Fixes
+
+- Addressed security and CIS baseline findings in the terminal deployment.
+
+## v4.0.6
+
+This release reduces the terminal image attack surface and improves command execution compatibility.
+
+### Improvements
+
+- Added a chroot wrapper for terminal command execution.
+- Removed risky binaries from the terminal image.
+
+### Bug Fixes
+
+- Updated vulnerable dependencies and OAuth-related components.
+
+## v4.0.3
+
+This is the first published Web Terminal release in the current plugin line. It provides browser-based terminal access to Kubernetes clusters and nodes.
+
+### Features
+
+- Added the cluster terminal workflow for running `kubectl` commands.
+- Added the node terminal workflow for node-level shell access.
+- Added terminal Pod lifecycle handling, including session cleanup and terminal environment setup.
+
+### Improvements
+
+- Added compatibility handling for token retrieval across platform versions.
+- Added terminal image tools such as `kubectl`, shell completion, and Vim support.

@@ -1,0 +1,25 @@
+---
+weight: 20
+queries:
+  - "How does Web Terminal create terminal Pods?"
+  - "web-cli terminal Pod labels and name prefixes"
+  - "cluster terminal Pod capacity"
+---
+
+# Terminal Pods
+
+Web Terminal uses short-lived Pods to provide interactive cluster and node shell sessions. Pods are created in the platform system namespace, `cpaas-system` by default.
+
+## Pod Types
+
+Cluster terminal Pods use the `cluster-terminal-` name prefix. Node terminal Pods use the `node-terminal-` prefix, include the selected node in their scheduling template, and mount the node root filesystem at `/host`. The node terminal shell starts in the Pod environment, so run `chroot /host` before operating on the node.
+
+## Pod Discovery
+
+The manager discovers terminal Pods with the `web-terminal=true` label selector.
+
+## Capacity Limit
+
+A cluster can hold up to 50 active cluster terminal Pods. Creating a cluster terminal is rejected once the limit is reached. Node terminal creation does not use the cluster-terminal capacity check.
+
+The limit is fixed in each plugin version and cannot be changed after installation.

@@ -1,0 +1,25 @@
+---
+weight: 10
+queries:
+  - "How are Web Terminal sessions managed?"
+  - "web-cli idle timeout and session cleanup"
+  - "active terminal session recovery"
+---
+
+# Terminal Sessions
+
+Web Terminal tracks each active terminal session by its cluster and Pod. The manager uses the activity time to determine whether a session is idle.
+
+## Session Creation
+
+The service creates a terminal Pod in the system namespace when a matching Pod does not already exist. The Pod must reach the `Running` phase before the interactive session can continue.
+
+## Idle Timeout
+
+A session is closed after 15 minutes without activity. The manager removes idle Pods during its periodic cleanup cycle and closes the associated session. The terminal then displays a disconnection notice; see [Troubleshoot Session Timeout](../troubleshooting/session_timeout.mdx) for how to resume work.
+
+The timeout is fixed in each plugin version and cannot be changed after installation.
+
+## Recovery and Reconciliation
+
+The manager stores active session records in memory and synchronizes them through the `active-terminals` ConfigMap. It checks that recorded Pods still exist and periodically recovers sessions after service restarts.

@@ -1,19 +1,37 @@
 ---
-weight: 16
+weight: 40
+queries:
+  - "How do I upgrade web-cli?"
+  - "Web Terminal upgrade"
+  - "verify a Cluster Plugin upgrade"
 ---
-
-:::tip
-
-If the parent module requires a separate manual upgrade process, you should provide upgrade documentation. Otherwise, this section can be omitted.
-
-Upgrade documentation should include the upgrade process, configuration options, and rollback procedures.
-
-If there are significant differences in the upgrade process between versions, consider organizing the upgrade documentation into a directory with separate documents for each version (e.g., "Upgrade from 3.10", "Upgrade from 3.18").
-
-You can view an [Upgrade example](https://product-doc-guide.alauda.cn/template/upgrade/example.html) for reference.
-
-:::
 
 # Upgrade
 
-Introduce the upgrade process for the specific module.
+Before you start, review the platform's <ExternalSiteLink name="acp" href="/extend/cluster_plugin.html#upgrade-process" children="Cluster Plugin upgrade process" />.
+
+## Before You Start
+
+Confirm that the target `web-cli` package is published to the platform marketplace and that the selected version is compatible with your platform release. Review the target `ModuleConfig` before selecting a version.
+
+## Upgrade the Plugin
+
+1. Upload the new `web-cli` package through the platform's standard package publishing process.
+2. Wait for the platform to synchronize the new version information before reviewing it in the Cluster Plugin list.
+3. Open the Cluster Plugins page, select the target cluster, and review the published version.
+4. Start the upgrade from the list or details page when the plugin's lifecycle supports standalone upgrades.
+5. If the platform marks the plugin as `Core`, upgrade the cluster instead of performing a standalone plugin upgrade.
+
+## Verify the Upgrade
+
+Run the following command in the global cluster:
+
+```shell
+kubectl get moduleinfo -l cpaas.io/module-name=web-cli
+```
+
+Confirm that the status is `Running` and that `TARGET_VERSION` and `CURRENT_VERSION` both show the version you selected. `NEW_VERSION` reports the newest version available in the marketplace, so it can differ from the installed version without indicating a failure. Start a cluster terminal and run `kubectl get nodes` to verify end-to-end access.
+
+## Rollback Boundary
+
+The platform controls the installed plugin version through `ModuleInfo` and the published `ModuleConfig`. When a rollback is required, select a previously published version through the platform upgrade workflow.

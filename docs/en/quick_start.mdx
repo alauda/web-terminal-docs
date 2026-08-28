@@ -1,66 +1,69 @@
 ---
-weight: 40
+weight: 50
+queries:
+  - "How do I start a Web Terminal session?"
+  - "web-cli quick start kubectl"
+  - "open a cluster or node terminal"
 ---
 
-:::tip
+import terminalIcon from './assets/terminal_square.svg'
 
-Use a "simple and actionable" example to help users quickly experience the key features.
-
-For reference, you can view a [Quick Start example](https://product-doc-guide.alauda.cn/template/quick_start/example.html).
-
-:::
+export const WebCliIcon = () => (
+  <span style={{ whiteSpace: 'nowrap' }}>
+    <img src={terminalIcon} alt="Web CLI terminal icon" width="20" height="20" style={{ display: 'inline-block', verticalAlign: 'middle' }} /> <strong>Web CLI</strong> terminal icon
+  </span>
+)
 
 # Quick Start
 
-Summarize the purpose, audience, and main content of this document in one sentence. For example: This document helps new users quickly understand and use the XXX feature.
+This guide helps platform users start a cluster or node terminal after an administrator installs the `web-cli` plugin.
 
-## Introduction
+## Prerequisites
 
-### Use Cases
+Before you start, confirm the following conditions:
 
-Provide users with a simple scenario to help them understand what this document covers and what problems it solves.
+- An administrator has installed `web-cli` on the global cluster.
+- Your account has permission to use the target cluster or node.
+- The terminal Pod can be created in the system namespace, `cpaas-system` by default.
 
-### Estimated Reading Time
+## Open Web Terminal
 
-Indicate the estimated time to read and follow this guide, for example: 10-15 minutes.
+Click the <WebCliIcon /> in the top-right corner of the platform page. Web Terminal opens as its own session page:
 
-## Important Notes (Optional)
+- The left pane lists the clusters you can access. Expand a cluster to list its nodes.
+- The search box above the list filters the list by cluster name or node name.
+- Selecting a cluster or a node opens a terminal in a sub-tab on the right. Each sub-tab is a separate session, so you can keep several clusters and nodes open at the same time.
 
-Highlight any important considerations users should be aware of before proceeding, such as: permission requirements, usage limitations, important reminders, or potential risks.
+## Start a Cluster Terminal
 
-## Prerequisites (Optional)
+1. In the left pane, click the name of the cluster you want to operate on. A sub-tab opens on the right.
+2. Run a read-only command to verify access:
 
-List any preparations users need to make before following this guide, such as: required background knowledge, environment requirements, software versions, hardware configurations, or network requirements.
+   ```shell
+   kubectl get nodes
+   ```
 
-## Process Overview
+The command output confirms that the terminal session can reach the API server of the selected cluster with your current permissions.
 
-- Use a table to list the steps users need to follow, providing an overview of the entire process. The list should include:
-  - Step number: Starting from 1 and incrementing sequentially.
-  - Operation: The steps users need to perform. All steps should form a complete process, giving users a macro understanding of the feature and clearly showing what results they can expect.
-  - Description: A concise explanation of each step that allows users to quickly understand what's involved.
+## Start a Node Terminal
 
-## Step-by-Step Instructions
+1. In the left pane, expand the cluster that hosts the node, then click the node name. A sub-tab opens on the right.
+2. The session starts inside the terminal Pod. Switch to the node's root filesystem:
 
-Provide detailed instructions for each step outlined in the Process Overview.
+   ```shell
+   chroot /host
+   ```
 
-### Step 1
+3. Run a shell command to verify the session:
 
-- Begin with a paragraph summarizing this operation, helping users understand the basic concepts related to this functionality.
+   ```shell
+   hostname
+   ```
 
-- Under the paragraph, use an ordered list to detail the specific configuration steps.
+The output should identify the selected node.
 
-...
+## Expected Results
 
-### Step N
+The terminal displays command output and remains available while you are active. After 15 minutes without activity, the platform closes the session and removes the associated terminal Pod, and the terminal displays a disconnection notice. Select **Reconnect** to start a new session in the same sub-tab. See [Troubleshoot Session Timeout](./troubleshooting/session_timeout.mdx).
 
-- Begin with a paragraph summarizing this operation, helping users understand the basic concepts related to this functionality.
-
-- Under the paragraph, use an ordered list to detail the specific configuration steps.
-
-### Expected Results (Adjust title based on actual content)
-
-To help users better understand the entire process and functionality, use one or more of the following methods to demonstrate the expected results:
-
-- Feature Overview: Describe the main characteristics and purposes through text.
-- Visual Demonstration: Add images to visualize the results.
-- Step List: Detail the operation process through a step-by-step list.
+For the installation procedure, see [Install](./install.mdx).

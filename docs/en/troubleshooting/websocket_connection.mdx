@@ -1,0 +1,21 @@
+---
+weight: 30
+queries:
+  - "Why does Web Terminal WebSocket connection fail?"
+  - "web-cli auth pod shell connection troubleshooting"
+  - "Web Terminal authentication and authorization errors"
+---
+
+# Troubleshoot WebSocket Connections
+
+## Check the Plugin Status
+
+Confirm that the `web-cli` ModuleInfo reports `Running` before investigating the WebSocket connection.
+
+## Check Access Permissions
+
+The WebSocket request is processed through platform authentication, authorization, and audit middleware. Confirm that your account can access the selected cluster or node.
+
+## Check the Terminal Pod
+
+A WebSocket session depends on a ready terminal Pod. Check the Pod status in the system namespace and follow [Troubleshoot Terminal Pods](./terminal_pod.mdx) when the Pod is missing or not running.
