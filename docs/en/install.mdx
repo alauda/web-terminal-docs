@@ -9,7 +9,7 @@ queries:
 
 # Install
 
-The `web-cli` Cluster Plugin is installed once on the global cluster; it is not installed separately on each workload cluster. Installing it enables the Web CLI entry in the top-right corner of the platform page, which provides both the cluster terminal and the node terminal.
+The `web-cli` Cluster Plugin is installed once on the `global` cluster; it is not installed separately on each workload cluster. Installing it enables the Web CLI entry in the top-right corner of the platform page, which provides both the cluster terminal and the node terminal.
 
 The plugin is delivered as a platform package. Installation follows the standard Cluster Plugin workflow: publish the package to the marketplace, select a version, and start the installation. For the platform-wide workflow and lifecycle definitions, see <ExternalSiteLink name="acp" href="/extend/cluster_plugin.html#cluster-plugin" children="Cluster Plugin" />.
 
@@ -18,8 +18,8 @@ Use either method below. The web console is the shorter path; the YAML method ap
 ## Prerequisites
 
 - The target `web-cli` package version is published to the platform marketplace.
-- You can query resources and create a `ModuleInfo` in the global cluster.
-- The selected `ModuleConfig` is available in the global cluster.
+- You can query resources and create a `ModuleInfo` in the `global` cluster.
+- The selected `ModuleConfig` is available in the `global` cluster.
 
 ## Install from the Web Console
 
@@ -30,7 +30,7 @@ Follow the platform's standard <ExternalSiteLink name="acp" href="/extend/cluste
 <Steps>
 ### Step 1: Check Available Versions
 
-In the global cluster, confirm that the plugin and target version are available:
+In the `global` cluster, confirm that the Cluster Plugin and target version are available:
 
 ```shell
 kubectl get moduleplugins web-cli
@@ -41,7 +41,7 @@ Inspect the target `ModuleConfig` and confirm that its cluster affinity is globa
 
 ### Step 2: Create a ModuleInfo
 
-Create the `ModuleInfo` resource in the global cluster. The `cpaas.io/cluster-name` label targets the global cluster, but it does not change where the YAML is applied.
+Create the `ModuleInfo` resource in the `global` cluster. The `cpaas.io/cluster-name` label targets the `global` cluster, but it does not change where the YAML is applied.
 
 ```yaml
 apiVersion: cluster.alauda.io/v1alpha1
@@ -57,7 +57,7 @@ spec:
   version: v4.2.12
 ```
 
-Choose a `metadata.name` that is stable and unique in the global cluster; the name cannot be changed after creation, and nothing rejects a second `ModuleInfo` for the same plugin under a different name. Installing from the web console generates its own name, so use one method consistently for a given cluster. Set `spec.version` to the exact version in the selected `ModuleConfig`.
+Choose a `metadata.name` that is stable and unique in the `global` cluster; the name cannot be changed after creation, and nothing rejects a second `ModuleInfo` for the same plugin under a different name. Installing from the web console generates its own name, so use one method consistently for a given cluster. Set `spec.version` to the exact version in the selected `ModuleConfig`.
 </Steps>
 
 ## Verify the Installation

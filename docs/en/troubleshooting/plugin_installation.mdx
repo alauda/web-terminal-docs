@@ -10,7 +10,7 @@ queries:
 
 ## ModuleInfo Is Not Running
 
-Check the ModulePlugin and ModuleConfig in the global cluster:
+Check the ModulePlugin and ModuleConfig in the `global` cluster:
 
 ```shell
 kubectl get moduleplugins web-cli
@@ -22,7 +22,7 @@ Confirm that the selected ModuleConfig version is published, the ModuleInfo has 
 
 ## Installation Does Not Start
 
-Verify that the ModuleInfo was applied to the global cluster. The `cpaas.io/cluster-name` label identifies the installation target, but it does not change the cluster where the resource must be created.
+Verify that the ModuleInfo was applied to the `global` cluster. The `cpaas.io/cluster-name` label identifies the installation target, but it does not change the cluster where the resource must be created.
 
 ## Version Mismatch
 
