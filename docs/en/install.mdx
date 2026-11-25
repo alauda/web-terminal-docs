@@ -54,7 +54,7 @@ metadata:
   name: global-web-cli
 spec:
   config: {}
-  version: v4.2.12
+  version: v4.2.16
 ```
 
 Choose a `metadata.name` that is stable and unique in the `global` cluster; the name cannot be changed after creation, and nothing rejects a second `ModuleInfo` for the same Cluster Plugin under a different name. Installing from the web console generates its own name, so use one method consistently for a given cluster. Set `spec.version` to the exact version in the selected `ModuleConfig`.
