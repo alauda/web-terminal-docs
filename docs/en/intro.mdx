@@ -24,8 +24,8 @@ Use Web Terminal when you need to inspect or operate a cluster without configuri
 
 ## Scope and Limitations
 
-- The `web-cli` plugin is installed on the global cluster.
+- The `web-cli` Cluster Plugin is installed on the `global` cluster.
 - Terminal access is subject to the identity and permissions supplied by the platform.
 - Terminal sessions run in Kubernetes Pods. A session cannot start when the required Pod cannot be created or does not become ready.
 - Sessions are closed after 15 minutes without activity.
-- Session and capacity behavior is fixed in each plugin version. `web-cli` publishes no configuration form, so these values cannot be changed after installation; moving to different values requires a different plugin version through the [Upgrade](./upgrade.mdx) workflow.
+- Session and capacity behavior is fixed in each Cluster Plugin version. `web-cli` publishes no configuration form, so these values cannot be changed after installation; moving to different values requires a different Cluster Plugin version through the [Upgrade](./upgrade.mdx) workflow.
